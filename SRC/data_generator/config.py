@@ -1,0 +1,14 @@
+from SRC.util import *
+
+EXPORT_DIR = 'export'
+
+GENERATE_COUNTS = {
+    DRIVERS: 775,
+    CONSTRUCTORS: 200,
+    SEASONS: 100,
+    CIRCUITS: 100
+}
+
+SEASON_MIN_YEAR = 1950
+DRIVERS_PER_RACE = 20
+FASTEST_QUALIFYING_TIME_SECONDS = 92.726 # Charles LeClercs fastest time 2023

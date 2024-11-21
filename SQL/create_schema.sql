@@ -22,10 +22,10 @@ CREATE TABLE `Driver` (
     `Date of Death` DATE,
     `Gender` VARCHAR(255),
     `Country of Birth` VARCHAR(255),
-    `Total Championships` INT,
-    `Total Race Entries` INT,
-    `Total Race Wins` INT,
-    `Total Points` INT
+    `Total Championships` INT, # derived form season as count() where winning driver.id == driver.id
+    `Total Race Entries` INT,  # derived from race result where race result.driver id == driver.id
+    `Total Race Wins` INT,     # derived from race result where race result.driver id == driver.id and position == 1
+    `Total Points` INT         # derived from race result sum(points) where race result.driver id == driver.id
 );
 
 CREATE TABLE `Driver Entry` (
@@ -41,11 +41,11 @@ CREATE TABLE `Constructor` (
     `Constructor ID` INT AUTO_INCREMENT PRIMARY KEY,
     `Country` VARCHAR(255),
     `Name` VARCHAR(255),
-    `Date of First Debut` DATE,
-    `Total Championships` INT,
-    `Total Race Entries` INT,
-    `Total Race Wins` INT,
-    `Total Points` INT
+    `Date of First Debut` DATE, # derived from driver entry where result.constructorid = id SORT BY START DATE ASCENDING LIMIT 1
+    `Total Championships` INT,  # derived from season count constructor winner
+    `Total Race Entries` INT,   # derived from race result select count(*) from race result where result.constructorid = id
+    `Total Race Wins` INT,      # derived from race result select count(*) from race result where result.constructorid = id and position = 1
+    `Total Points` INT          # derived from race result select sum(points) from race result where result.constructorid = id
 );
 
 CREATE TABLE `Main Race` (
@@ -90,7 +90,7 @@ CREATE TABLE `Race Result` (
     `Driver ID` INT,
     `Position` TINYINT,
     `Points Gain/Loss` TINYINT,
-    `Total Pit Stops` TINYINT
+    `Total Pit Stops` TINYINT # derives from pit stop select count(*) from pit stop where pit stop.race id = id and driver.id = id
 );
 
 -- Adding relationships
