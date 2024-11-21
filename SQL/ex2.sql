@@ -370,7 +370,7 @@ DELIMITER ;
 SHOW TABLES;
 
 -- Display all triggers names in the database
-SELECT TRIGGER_NAME 
-FROM information_schema.TRIGGERS 
+SELECT TRIGGER_NAME
+FROM information_schema.TRIGGERS
 WHERE TRIGGER_SCHEMA = 'f1db';
 
