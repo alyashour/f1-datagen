@@ -72,3 +72,5 @@ INSERT INTO `Pit Stop` (`Race ID`, `Driver ID`, `Lap Number`, `Time in Pit`) VAL
 SELECT * FROM `Driver`;
 SELECT * FROM `Grand Prix`;
 SELECT * FROM `Qualifying Result`;
+
+-- count, rand, and groupby for "Interesting"
