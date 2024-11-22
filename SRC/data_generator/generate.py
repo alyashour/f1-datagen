@@ -1,7 +1,7 @@
-from SRC.data_generator.config import *
-from SRC.data_generator.models import *
-from SRC.data_generator.models.race_result import RaceResult
-from SRC.util import PrintableDict
+from data_generator.config import *
+from data_generator.models import *
+from data_generator.models.race_result import RaceResult
+from util import PrintableDict
 
 
 def generate_all():

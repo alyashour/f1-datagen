@@ -1,4 +1,4 @@
-from SRC.util import PrintableDict
+from util import PrintableDict
 from data_generator import generate_all
 from data_writer.db import main as push_to_db
 

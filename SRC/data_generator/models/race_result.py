@@ -3,15 +3,15 @@ import random
 from faker import Faker
 from tqdm import tqdm
 
-from SRC.data_generator.config import DRIVERS_PER_RACE
-from SRC.data_generator.models.constructor import Constructor
-from SRC.data_generator.models.driver import Driver
-from SRC.data_generator.models.driver_entry import DriverEntry
-from SRC.data_generator.models.grand_prix import GrandPrix
-from SRC.data_generator.models.main_race import MainRace
-from SRC.data_generator.models.model import Model
-from SRC.data_generator.models.season import Season
-from SRC.util import UtilList
+from data_generator.config import DRIVERS_PER_RACE
+from data_generator.models.constructor import Constructor
+from data_generator.models.driver import Driver
+from data_generator.models.driver_entry import DriverEntry
+from data_generator.models.grand_prix import GrandPrix
+from data_generator.models.main_race import MainRace
+from data_generator.models.model import Model
+from data_generator.models.season import Season
+from util import UtilList
 
 fake = Faker()
 fake.unique.clear()

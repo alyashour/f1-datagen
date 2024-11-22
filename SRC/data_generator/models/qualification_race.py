@@ -2,10 +2,10 @@ from datetime import date, timedelta
 
 from faker import Faker
 
-from SRC.data_generator.config import SEASON_START_MONTH, SEASON_START_DAY
-from SRC.data_generator.models.model import Model
-from SRC.data_generator.models.grand_prix import GrandPrix
-from SRC.util import UtilList
+from data_generator.config import SEASON_START_MONTH, SEASON_START_DAY
+from data_generator.models.model import Model
+from data_generator.models.grand_prix import GrandPrix
+from util import UtilList
 
 
 fake = Faker()

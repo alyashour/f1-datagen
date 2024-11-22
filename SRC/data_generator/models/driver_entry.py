@@ -1,11 +1,11 @@
 from faker import Faker
 
-from SRC.data_generator.config import SEASON_START_MONTH, SEASON_START_DAY, SEASON_END_MONTH, SEASON_END_DAY
-from SRC.data_generator.models.constructor import Constructor
-from SRC.data_generator.models.driver import Driver
-from SRC.data_generator.models.model import Model
-from SRC.data_generator.models.season import Season
-from SRC.util import UtilList
+from data_generator.config import SEASON_START_MONTH, SEASON_START_DAY, SEASON_END_MONTH, SEASON_END_DAY
+from data_generator.models.constructor import Constructor
+from data_generator.models.driver import Driver
+from data_generator.models.model import Model
+from data_generator.models.season import Season
+from util import UtilList
 
 fake = Faker()
 fake.unique.clear()

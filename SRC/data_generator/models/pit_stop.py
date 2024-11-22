@@ -1,7 +1,7 @@
 import random
-from SRC.data_generator.models.race_result import RaceResult
-from SRC.data_generator.models.model import Model
-from SRC.util import UtilList
+from data_generator.models.race_result import RaceResult
+from data_generator.models.model import Model
+from util import UtilList
 
 LAPS = 55
 

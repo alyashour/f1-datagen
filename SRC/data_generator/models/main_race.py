@@ -1,7 +1,7 @@
-from SRC.data_generator.config import SEASON_START_MONTH, SEASON_START_DAY
-from SRC.data_generator.models.grand_prix import GrandPrix
-from SRC.data_generator.models.model import Model
-from SRC.util import UtilList
+from data_generator.config import SEASON_START_MONTH, SEASON_START_DAY
+from data_generator.models.grand_prix import GrandPrix
+from data_generator.models.model import Model
+from util import UtilList
 
 from datetime import date, timedelta
 

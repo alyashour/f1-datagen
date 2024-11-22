@@ -1,23 +1,21 @@
-import logging
-
 import mysql.connector
 from mysql.connector.abstracts import MySQLConnectionAbstract
 
-from SRC.data_generator.models import MainRace, PitStop, QualificationRace
-from SRC.data_writer.sql_commands import *
-from SRC.data_writer.util import read_sql_file, info
-from SRC.secrets import db_pswd
-from SRC.util import DRIVERS, CIRCUITS, CONSTRUCTORS, DRIVER_ENTRIES, GRAND_PRIX, MAIN_RACES, PIT_STOPS, QUALIFICATION_RACES, QUALIFYING_RESULTS, \
+from data_writer.sql_commands import *
+from data_writer.util import read_sql_file, info
+from util import DRIVERS, CIRCUITS, CONSTRUCTORS, DRIVER_ENTRIES, GRAND_PRIX, MAIN_RACES, PIT_STOPS, QUALIFICATION_RACES, QUALIFYING_RESULTS, \
     RACE_RESULTS, SEASONS
 
-DB_NAME = 'test'
-EXPECTED_NUM_TABLES = 11
+# config
+from data_generator.config import MODEL_COUNT as EXPECTED_NUM_TABLES
+from data_writer.config import DB_NAME, DB_HOST, DB_USER, DO_AUTO_OVERWRITE_DB, CREATE_TABLES_SQL_FILE_NAME
+from secrets import db_pswd
 
 def create_db(auto_delete=False) -> MySQLConnectionAbstract:
     # create connection
     with mysql.connector.connect(
-        host="localhost",
-        user="root",
+        host=DB_HOST,
+        user=DB_USER,
         passwd=db_pswd
     ) as connection:
         try:
@@ -49,7 +47,7 @@ def create_db(auto_delete=False) -> MySQLConnectionAbstract:
         )
 
 def create_tables(connection: MySQLConnectionAbstract) -> None:
-    commands = read_sql_file('ex2.sql')
+    commands = read_sql_file(CREATE_TABLES_SQL_FILE_NAME)
 
     with connection.cursor() as cursor:
         cursor.execute(f'USE {DB_NAME}')
@@ -179,7 +177,7 @@ def main(data):
     connection = None
     try:
         print('connecting to server...')
-        connection = create_db(auto_delete=True)
+        connection = create_db(auto_delete=DO_AUTO_OVERWRITE_DB)
 
         print('adding tables...')
         create_tables(connection)
@@ -193,6 +191,3 @@ def main(data):
     finally:
         print('closing connection...')
         connection.close()
-
-if __name__ == '__main__':
-    main()

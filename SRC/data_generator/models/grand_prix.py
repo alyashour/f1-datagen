@@ -3,11 +3,11 @@ from random import random
 
 from faker import Faker
 
-from SRC.data_generator.config import RACES_PER_SEASON
-from SRC.data_generator.models.model import Model
-from SRC.data_generator.models.season import Season
-from SRC.data_generator.models.circuit import Circuit
-from SRC.util import UtilList
+from data_generator.config import RACES_PER_SEASON
+from data_generator.models.model import Model
+from data_generator.models.season import Season
+from data_generator.models.circuit import Circuit
+from util import UtilList
 
 
 fake = Faker()

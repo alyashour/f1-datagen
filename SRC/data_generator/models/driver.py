@@ -1,8 +1,8 @@
 from datetime import date
 from faker import Faker
 
-from SRC.data_generator.models.model import Model
-from SRC.data_generator.config import *
+from data_generator.models.model import Model
+from data_generator.config import *
 
 fake = Faker()
 fake.unique.clear()

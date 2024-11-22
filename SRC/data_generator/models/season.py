@@ -1,7 +1,7 @@
 from faker import Faker
 
-from SRC.data_generator.models.model import Model
-from SRC.data_generator.config import SEASON_MIN_YEAR as MIN_YEAR
+from data_generator.models.model import Model
+from data_generator.config import SEASON_MIN_YEAR as MIN_YEAR
 
 fake = Faker()
 fake.unique.clear()

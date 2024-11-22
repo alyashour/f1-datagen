@@ -1,6 +1,6 @@
-from SRC.util import *
+from util import *
 
-EXPORT_DIR = 'export'
+MODEL_COUNT = 11
 
 GENERATE_COUNTS = {
     DRIVERS: 30, # DEFAULT 775

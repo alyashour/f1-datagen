@@ -1,6 +1,6 @@
 from faker import Faker
 
-from SRC.data_generator.models.model import Model
+from data_generator.models.model import Model
 
 fake = Faker()
 fake.unique.clear()

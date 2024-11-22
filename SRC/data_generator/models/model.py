@@ -1,4 +1,4 @@
-from SRC.util import UtilList
+from util import UtilList
 
 def sequential_id_gen(dflt=1):
     n = dflt
