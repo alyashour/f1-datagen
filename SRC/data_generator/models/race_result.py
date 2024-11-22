@@ -86,7 +86,7 @@ class RaceResult(Model):
             if race.date.year not in participating_driver_entries_cache:
                 participating_driver_entries_cache[race.date.year] = UtilList([entry for entry in driver_entries if get_year(entry.start_date) == race.date.year])
             participating_driver_entries = participating_driver_entries_cache[race.date.year]
-            participating_drivers = UtilList([drivers[entry.driver_id] for entry in participating_driver_entries])
+            participating_drivers = UtilList([drivers[entry.driver_id - 1] for entry in participating_driver_entries])
 
             # make sure there are enough drivers
             assert len(participating_drivers) >= DRIVERS_PER_RACE, (f"Need more drivers to generate race results!\n"

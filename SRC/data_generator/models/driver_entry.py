@@ -23,8 +23,15 @@ class DriverEntry(Model):
         self.end_date: str = end_date
         self.driver_role = driver_role
 
+        self.season_id = self.get_year()
+
     def get_year(self):
         return int(self.start_date.split('-')[0])
+
+    @classmethod
+    def get_seasons_drivers(cls, entries, season_id):
+        l = [entry for entry in entries if entry.season_id == season_id]
+        return UtilList(l)
 
     @classmethod
     def generate(cls, drivers=None, constructors=None, seasons=None):

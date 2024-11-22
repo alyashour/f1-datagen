@@ -41,7 +41,7 @@ def generate_all():
     # includes qualifying result and race results
     print('generating third class data...')
     data[QUALIFYING_RESULTS] = QualifyingResult.generate(
-        drivers=data[DRIVERS],
+        driver_entries=data[DRIVER_ENTRIES],
         qualifying_races=data[QUALIFICATION_RACES],
         show_progress=True
     )

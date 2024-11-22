@@ -121,11 +121,13 @@ CREATE TABLE DriverEntry (
     DriverEntry_ID INT AUTO_INCREMENT PRIMARY KEY,
     Driver_ID INT NOT NULL,
     Constructor_ID INT NOT NULL,
+    Season_ID INT NOT NULL,
     Start_Date DATE NOT NULL,
     End_Date DATE,
     Driver_Role VARCHAR(50),
     FOREIGN KEY (Driver_ID) REFERENCES Driver(Driver_ID),
-    FOREIGN KEY (Constructor_ID) REFERENCES Constructor(Constructor_ID)
+    FOREIGN KEY (Constructor_ID) REFERENCES Constructor(Constructor_ID),
+    FOREIGN KEY (Season_ID) REFERENCES Season(Season_ID)
 );
 DESCRIBE DriverEntry;
 

@@ -17,6 +17,9 @@ class QualifyingFormat(Enum):
     QUALIFYING = 'qualifying'
     SPRINT = 'sprint'
 
+    def __str__(self):
+        return self.value
+
 def rand_format():
     n = random()
     if n < 0.9:

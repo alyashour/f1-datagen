@@ -19,5 +19,9 @@ class Season(Model):
         super().__init__()
         self.id = next(year)
 
+        # TODO
+        self.driver_winner = 1
+        self.constructor_winner = 1
+
 if __name__ == "__main__":
     print(Season.generate(5))

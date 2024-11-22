@@ -25,10 +25,16 @@ def _get_saturdays(year):
         current_saturday += timedelta(days=7)
 
 class QualificationRace(Model):
-    def __init__(self, grand_prix_id, date):
+    def __init__(self, grand_prix_id, date: date):
         super().__init__()
         self.grand_prix_id = grand_prix_id
-        self.date = date
+        self.date: date = date
+
+    def get_year(self):
+        return self.date.year
+
+    def get_season_id(self):
+        return self.get_year()
 
     @classmethod
     def generate(cls, n=1, grand_prix=None):

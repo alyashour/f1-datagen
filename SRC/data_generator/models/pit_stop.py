@@ -7,7 +7,7 @@ LAPS = 55
 
 def _random_pit_time():
     noise = random.uniform(-0.5, 1.5)
-    return f'{round(2 + noise, 3)}s'
+    return round(2 + noise, 3)
 
 class PitStop(Model):
     def __init__(self, race_id, driver_id, lap_number, time_in_pit):
