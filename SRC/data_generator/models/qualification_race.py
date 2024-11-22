@@ -44,10 +44,15 @@ class QualificationRace(Model):
         l = UtilList()
         for gp in grand_prix:
             gen = _get_saturdays(gp.season_id)
-            l.append(QualificationRace(
+            race = QualificationRace(
                 grand_prix_id=gp.id,
                 date=next(gen)
-            ))
+            )
+
+            l.append(race)
+
+            # also update gp
+            gp.qual_id = race.id
         return l
 
 if __name__ == "__main__":

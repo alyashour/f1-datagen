@@ -58,7 +58,7 @@ def generate_all():
         race_results=data[RACE_RESULTS]
     )
 
-    print('Done generating data!')
+    print('done generating data!')
     return data
 
 if __name__ == "__main__":

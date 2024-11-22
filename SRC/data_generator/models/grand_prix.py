@@ -9,7 +9,6 @@ from data_generator.models.season import Season
 from data_generator.models.circuit import Circuit
 from util import UtilList
 
-
 fake = Faker()
 fake.unique.clear()
 
@@ -28,9 +27,7 @@ def rand_format():
         return QualifyingFormat.SPRINT
 
 class GrandPrix(Model):
-    def __init__(self, circuit_id, season_id, qual_id, race_id,
-                 name=f'{fake.sentence(nb_words=2, variable_nb_words=True)[:-1].title()} GP',
-                 qualifying_format=rand_format()):
+    def __init__(self, circuit_id, season_id, qual_id, race_id, name, qualifying_format):
         super().__init__()
         self.circuit_id = circuit_id
         self.season_id = season_id
@@ -49,19 +46,21 @@ class GrandPrix(Model):
         l = UtilList()
         assert len(circuits) >= RACES_PER_SEASON, 'Not enough circuits, cannot generate.'
 
+        # iterate over the seasons
         for season in seasons:
-            count = 0
-            for circuit in circuits:
-                if count < n:
-                    l.append(GrandPrix(
-                        circuit_id=circuit.id,
-                        season_id=season.id,
-                        qual_id=None,
-                        race_id=None
-                    ))
-                    count += 1
-                else:
-                    break
+            # pick a random circuit
+            circuit_index = circuits.unique_random_index_gen()
+            for _ in range(n):
+                circuit = circuits[next(circuit_index)]
+                l.append(GrandPrix(
+                    circuit_id=circuit.id,
+                    season_id=season.id,
+                    name=f'{fake.sentence(nb_words=2, variable_nb_words=True)[:-1].title()} GP',
+                    qualifying_format=rand_format(),
+                    # to be generated later when races are generated
+                    qual_id=None,
+                    race_id=None
+                ))
 
         return l
 

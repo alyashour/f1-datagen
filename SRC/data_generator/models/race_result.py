@@ -3,7 +3,7 @@ import random
 from faker import Faker
 from tqdm import tqdm
 
-from data_generator.config import DRIVERS_PER_RACE
+from data_generator.config import DRIVERS_PER_RACE, AVG_PIT_STOPS_RANGE, POINTS_LOOKUP, PIT_STOPS_VARIANCE
 from data_generator.models.constructor import Constructor
 from data_generator.models.driver import Driver
 from data_generator.models.driver_entry import DriverEntry
@@ -15,23 +15,6 @@ from util import UtilList
 
 fake = Faker()
 fake.unique.clear()
-
-MIN_PIT_STOPS = 0
-MAX_PIT_STOPS = 5
-
-POINTS_LOOKUP = {
-    1: 25,  # 1st place
-    2: 18,  # 2nd place
-    3: 15,  # 3rd place
-    4: 12,  # 4th place
-    5: 10,  # 5th place
-    6: 8,   # 6th place
-    7: 6,   # 7th place
-    8: 4,   # 8th place
-    9: 2,   # 9th place
-    10: 1,   # 10th place
-    11: 0, 12: 0, 13: 0, 14: 0, 15: 0, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0
-}
 
 def first(list, predicate):
     for item in list:
@@ -56,7 +39,7 @@ class RaceResult(Model):
         else:
             self.points_gain_loss = POINTS_LOOKUP[position]
         if total_pit_stops is None:
-            self.total_pit_stops = fake.random_int(MIN_PIT_STOPS, MAX_PIT_STOPS)
+            self.total_pit_stops = fake.random_int(AVG_PIT_STOPS_RANGE[0], AVG_PIT_STOPS_RANGE[1]) + fake.random_int(0, PIT_STOPS_VARIANCE)
         else:
             self.total_pit_stops = total_pit_stops
 

@@ -8,8 +8,10 @@ from util import DRIVERS, CIRCUITS, CONSTRUCTORS, DRIVER_ENTRIES, GRAND_PRIX, MA
 
 # config
 from data_generator.config import MODEL_COUNT as EXPECTED_NUM_TABLES
-from data_writer.config import DB_NAME, DB_HOST, DB_USER, DO_AUTO_OVERWRITE_DB, CREATE_TABLES_SQL_FILE_NAME
+from data_writer.config import DB_NAME, DB_HOST, DB_USER, DO_AUTO_OVERWRITE_DB, CREATE_TABLES_SQL_FILE_NAME, UPDATE_TABLES_SQL_FILE_NAME
 from secrets import db_pswd
+
+EXPECTED_UPDATE_COMMAND_COUNT = 5
 
 def create_db(auto_delete=False) -> MySQLConnectionAbstract:
     # create connection
@@ -173,6 +175,18 @@ def populate(connection: MySQLConnectionAbstract, data) -> None:
     # commit results
     connection.commit()
 
+def update_derived_attributes(connection: MySQLConnectionAbstract):
+    commands = read_sql_file(UPDATE_TABLES_SQL_FILE_NAME)
+    command_count = 0
+    with connection.cursor() as cursor:
+        cursor.execute(f'USE {DB_NAME}')
+        for command in commands.split(';'):
+            if 'UPDATE' in command:
+                command_count += 1
+                cursor.execute(command)
+        assert command_count == EXPECTED_UPDATE_COMMAND_COUNT, "Not enough commands executed"
+        connection.commit()
+
 def main(data):
     connection = None
     try:
@@ -184,6 +198,9 @@ def main(data):
 
         print('populating data...')
         populate(connection, data)
+
+        print('updating derived attributes...')
+        update_derived_attributes(connection)
     except Exception as e:
         print('Error:', e)
         print('rolling back...')

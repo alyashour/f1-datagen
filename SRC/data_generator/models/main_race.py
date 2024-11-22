@@ -36,10 +36,14 @@ class MainRace(Model):
             year = int(gp.season_id)
             if year not in gens:
                 gens[year] = _get_sundays(year)
-            l.append(MainRace(
+            race = MainRace(
                 grand_prix_id=gp.id,
                 date=next(gens[year])
-            ))
+            )
+            l.append(race)
+
+            # also update gp
+            gp.race_id = race.id
         return l
 
 if __name__ == "__main__":
