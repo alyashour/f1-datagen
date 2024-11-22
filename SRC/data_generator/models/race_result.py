@@ -64,7 +64,7 @@ class RaceResult(Model):
         filtered_entries_cache = {}
 
         # for every race, ever
-        for race in tqdm(races, desc="Processing Races", unit="race"):
+        for race in tqdm(races, desc="Processing Races", unit=" races"):
             # get the drivers who raced that season
             if race.date.year not in participating_driver_entries_cache:
                 participating_driver_entries_cache[race.date.year] = UtilList([entry for entry in driver_entries if get_year(entry.start_date) == race.date.year])

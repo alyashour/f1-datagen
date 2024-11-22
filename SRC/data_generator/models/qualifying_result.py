@@ -48,7 +48,7 @@ class QualifyingResult(Model):
         l = UtilList()
 
         # for every qualifying race
-        for qualifying_race in tqdm(qualifying_races, desc="Processing Qualifying Races", unit="race"):
+        for qualifying_race in tqdm(qualifying_races, desc="Processing Qualifying Races", unit=" races"):
             # get the available drivers
             applicable_driver_entries: UtilList[DriverEntry] = DriverEntry.get_seasons_drivers(driver_entries, qualifying_race.get_season_id())
 
