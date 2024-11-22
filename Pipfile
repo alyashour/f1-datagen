@@ -5,8 +5,8 @@ name = "pypi"
 
 [packages]
 faker = "*"
-mysql-connector = "*"
 tqdm = "*"
+mysql-connector-python = "*"
 
 [dev-packages]
 

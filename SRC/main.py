@@ -1,6 +1,6 @@
 from SRC.util import PrintableDict
 from data_generator import generate_all
-from data_writer.db import populate as push_to_db
+from data_writer.db import main as push_to_db
 
 def main():
     data: PrintableDict = generate_all()
