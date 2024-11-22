@@ -1,4 +1,4 @@
-from SRC.util import PrintableList
+from SRC.util import UtilList
 
 def sequential_id_gen(dflt=0):
     n = dflt
@@ -6,15 +6,18 @@ def sequential_id_gen(dflt=0):
         yield n
         n += 1
 
-id = sequential_id_gen()
-
 class Model:
+    _id_counters = {}
     def __init__(self):
-        self.id = next(id)
+        cls = self.__class__
+        if cls not in Model._id_counters:
+            Model._id_counters[cls] = sequential_id_gen()
+        self.id = next(Model._id_counters[cls])
+
 
     @classmethod
     def generate(cls, n=1):
-        return PrintableList([cls() for _ in range(n)])
+        return UtilList([cls() for _ in range(n)])
 
     def __str__(self):
         attributes = vars(self)  # Get all instance attributes as a dictionary

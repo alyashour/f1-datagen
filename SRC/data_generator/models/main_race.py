@@ -1,30 +1,24 @@
-from datetime import date, timedelta
-
-from faker import Faker
-
 from SRC.data_generator.config import SEASON_START_MONTH, SEASON_START_DAY
-from SRC.data_generator.models.model import Model
 from SRC.data_generator.models.grand_prix import GrandPrix
+from SRC.data_generator.models.model import Model
 from SRC.util import UtilList
 
+from datetime import date, timedelta
 
-fake = Faker()
-fake.unique.clear()
-
-def _get_saturdays(year):
+def _get_sundays(year: int):
     start_date = date(year, int(SEASON_START_MONTH), int(SEASON_START_DAY))
 
     # Find the first Sunday of the year
-    days_to_saturday = (5 - start_date.weekday()) % 7
-    first_saturday = start_date + timedelta(days=days_to_saturday)
+    days_to_sunday = (6 - start_date.weekday()) % 7
+    first_sunday = start_date + timedelta(days=days_to_sunday)
 
     # Generate Sundays sequentially
-    current_saturday = first_saturday
-    while current_saturday.year == year:
-        yield current_saturday
-        current_saturday += timedelta(days=7)
+    current_sunday = first_sunday
+    while current_sunday.year == year:
+        yield current_sunday
+        current_sunday += timedelta(days=7)
 
-class QualificationRace(Model):
+class MainRace(Model):
     def __init__(self, grand_prix_id, date):
         super().__init__()
         self.grand_prix_id = grand_prix_id
@@ -36,13 +30,17 @@ class QualificationRace(Model):
             grand_prix = GrandPrix.generate(n)
 
         l = UtilList()
+
+        gens = {}
         for gp in grand_prix:
-            gen = _get_saturdays(gp.season_id)
-            l.append(QualificationRace(
+            year = int(gp.season_id)
+            if year not in gens:
+                gens[year] = _get_sundays(year)
+            l.append(MainRace(
                 grand_prix_id=gp.id,
-                date=next(gen)
+                date=next(gens[year])
             ))
         return l
 
 if __name__ == "__main__":
-    print(QualificationRace.generate(5))
+    print(MainRace.generate())

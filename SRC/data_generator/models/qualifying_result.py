@@ -1,10 +1,11 @@
 from faker import Faker
+from tqdm import tqdm
 
 from SRC.data_generator.config import DRIVERS_PER_RACE, FASTEST_QUALIFYING_TIME_SECONDS
-from SRC.util import PrintableList
-from util import Model
+from SRC.data_generator.models.model import Model
 from SRC.data_generator.models.driver import Driver
 from SRC.data_generator.models.qualification_race import QualificationRace
+from SRC.util import UtilList
 
 fake = Faker()
 fake.unique.clear()
@@ -29,17 +30,22 @@ class QualifyingResult(Model):
         self.position = position
 
     @classmethod
-    def generate(cls, drivers=Driver.generate(20), races=QualificationRace.generate(10)):
+    def generate(cls, drivers=None, qualifying_races=None, show_progress=False):
+        if drivers is None:
+            drivers = Driver.generate(20)
+        if qualifying_races is None:
+            qualifying_races = QualificationRace.generate(10)
+
         # we have to gen as many results as there are drivers per race * num of races
-        n = DRIVERS_PER_RACE * len(races)
-        l = PrintableList([])
+        n = DRIVERS_PER_RACE * len(qualifying_races)
+        l = UtilList([])
 
         # make sure we have AT MINIMUM DRIVERS_PER_RACE drivers
         assert len(drivers) >= DRIVERS_PER_RACE, (f"Not enough drivers. Received {len(drivers)} but expected {DRIVERS_PER_RACE}, "
                                                   f"make sure to generate more before generating qualifying results. {drivers}")
 
         # for every qualifying race
-        for qualifying_race in races:
+        for qualifying_race in tqdm(qualifying_races, desc="Processing Qualifying Races", unit="race"):
             # pick a really fast time
             gap = 0
             lap_time = FASTEST_QUALIFYING_TIME_SECONDS + fake.random_int(min=0, max=15_000)/1000
@@ -55,7 +61,7 @@ class QualifyingResult(Model):
                     driver_id=driver.id,
                     qualifying_id=qualifying_race.id,
                     best_time=seconds_to_time(lap_time),
-                    gap=gap,
+                    gap=f'+{gap}',
                     position=position
                 ))
 
@@ -67,18 +73,21 @@ class QualifyingResult(Model):
                 # calc the new lap time
                 lap_time += gap
 
-                # calc the new position
+                # calc the next position
                 position += 1
+
+                if position > 20:
+                    break
 
         # check that all quals have a driver and qualifying
         for qual in l:
             assert qual.driver_id is not None
             assert qual.qualifying_id is not None
-        assert len(l) == n
+        assert len(l) == n, f'{len(l)} : {n}'
 
         return l
 
 if __name__ == "__main__":
     drivers = Driver.generate(20)
     races = QualificationRace.generate(10)
-    print(QualifyingResult.generate(drivers=drivers, races=races))
+    print(QualifyingResult.generate(drivers=drivers, qualifying_races=races))

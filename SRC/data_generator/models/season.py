@@ -1,6 +1,6 @@
 from faker import Faker
 
-from SRC.data_generator.models.util import Model
+from SRC.data_generator.models.model import Model
 from SRC.data_generator.config import SEASON_MIN_YEAR as MIN_YEAR
 
 fake = Faker()
@@ -16,7 +16,8 @@ year = year_gen()
 
 class Season(Model):
     def __init__(self):
-        self.year = next(year)
+        super().__init__()
+        self.id = next(year)
 
 if __name__ == "__main__":
     print(Season.generate(5))

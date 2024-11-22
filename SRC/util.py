@@ -13,7 +13,7 @@ CIRCUITS = 'circuits'
 PIT_STOPS = 'pit_stops'
 RACE_RESULTS = 'race_results'
 
-class PrintableList(List):
+class UtilList(List):
     def __init__(self, iterable=None):
         if iterable is None:
             iterable = []

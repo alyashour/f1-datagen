@@ -1,74 +1,79 @@
 from faker import Faker
 
-from SRC.data_generator.config import DRIVERS_PER_RACE, FASTEST_QUALIFYING_TIME_SECONDS
-from SRC.util import PrintableList
-from util import Model
+from SRC.data_generator.config import SEASON_START_MONTH, SEASON_START_DAY, SEASON_END_MONTH, SEASON_END_DAY
+from SRC.data_generator.models.constructor import Constructor
 from SRC.data_generator.models.driver import Driver
-from SRC.data_generator.models.qualification_race import QualificationRace
+from SRC.data_generator.models.model import Model
+from SRC.data_generator.models.season import Season
+from SRC.util import UtilList
 
 fake = Faker()
 fake.unique.clear()
 
+PRIMARY = 'primary'
+SECONDARY = 'secondary'
+RESERVE = 'reserve'
+
 class DriverEntry(Model):
-    def __init__(self, driver_id, qualifying_id, best_time, gap, position):
+    def __init__(self, driver_id, constructor_id, start_date, end_date, driver_role):
         super().__init__()
         self.driver_id = driver_id
-        self.qualifying_id = qualifying_id
-        self.best_time = best_time
-        self.gap = gap
-        self.position = position
+        self.constructor_id = constructor_id
+        self.start_date: str = start_date
+        self.end_date: str = end_date
+        self.driver_role = driver_role
+
+    def get_year(self):
+        return int(self.start_date.split('-')[0])
 
     @classmethod
-    def generate(cls, drivers=Driver.generate(20), races=QualificationRace.generate(10)):
-        # we have to gen as many results as there are drivers per race * num of races
-        n = DRIVERS_PER_RACE * len(races)
-        l = PrintableList([])
+    def generate(cls, drivers=None, constructors=None, seasons=None):
+        if drivers is None:
+            drivers = Driver.generate(30)
+        if constructors is None:
+            constructors = Constructor.generate(10)
+        if seasons is None:
+            seasons = Season.generate(10)
 
-        # make sure we have AT MINIMUM DRIVERS_PER_RACE drivers
-        assert len(drivers) >= DRIVERS_PER_RACE, (f"Not enough drivers. Received {len(drivers)} but expected {DRIVERS_PER_RACE}, "
-                                                  f"make sure to generate more before generating qualifying results. {drivers}")
+        l = UtilList()
 
-        # for every qualifying race
-        for qualifying_race in races:
-            # pick a really fast time
-            gap = 0
-            lap_time = FASTEST_QUALIFYING_TIME_SECONDS + fake.random_int(min=0, max=15_000)/1000
+        # have to be at least 3 drivers per constructor
+        assert len(drivers) >= len(constructors) * 3, ("Not enough drivers. "
+                                                       "Please make sure there are at least 3 drivers per team to generate. "
+                                                       f"Received {len(drivers)} need {len(constructors) * 3}")
 
-            # randomly pick a driver
-            dr_index_gen = drivers.unique_random_index_gen()
-            position = 1
-            for dr_index in dr_index_gen:
-                driver = drivers[dr_index]
+        # loop over all years
+        for season in seasons:
+            driver_id = drivers.unique_random_index_gen()
+            for constructor in constructors:
+                primary_driver: Driver= drivers[next(driver_id)]
+                secondary_driver: Driver = drivers[next(driver_id)]
+                reserve_driver: Driver = drivers[next(driver_id)]
 
-                # make a result
-                l.append(QualifyingResult(
-                    driver_id=driver.id,
-                    qualifying_id=qualifying_race.id,
-                    best_time=seconds_to_time(lap_time),
-                    gap=gap,
-                    position=position
+                l.append(DriverEntry(
+                    driver_id=primary_driver.id,
+                    constructor_id=constructor.id,
+                    start_date=f'{season.id}-{SEASON_START_MONTH}-{SEASON_START_DAY}',
+                    end_date=f'{season.id}-{SEASON_END_MONTH}-{SEASON_END_DAY}',
+                    driver_role=PRIMARY
                 ))
 
-                # find a dt (0 <= dt <= 300/20 s)
-                # 300/20s = 15s -> 5-minute avg spread from first to last
-                # calc the new gap
-                gap = fake.random_int(min=0, max=15_000)/1000
+                l.append(DriverEntry(
+                    driver_id=secondary_driver.id,
+                    constructor_id=constructor.id,
+                    start_date=f'{season.id}-{SEASON_START_MONTH}-{SEASON_START_DAY}',
+                    end_date=f'{season.id}-{SEASON_END_MONTH}-{SEASON_END_DAY}',
+                    driver_role=SECONDARY
+                ))
 
-                # calc the new lap time
-                lap_time += gap
-
-                # calc the new position
-                position += 1
-
-        # check that all quals have a driver and qualifying
-        for qual in l:
-            assert qual.driver_id is not None
-            assert qual.qualifying_id is not None
-        assert len(l) == n
-
+                l.append(DriverEntry(
+                    driver_id=reserve_driver.id,
+                    constructor_id=constructor.id,
+                    start_date=f'{season.id}-{SEASON_START_MONTH}-{SEASON_START_DAY}',
+                    end_date=f'{season.id}-{SEASON_END_MONTH}-{SEASON_END_DAY}',
+                    driver_role=RESERVE
+                ))
         return l
 
 if __name__ == "__main__":
-    drivers = Driver.generate(20)
-    races = QualificationRace.generate(10)
-    print(QualifyingResult.generate(drivers=drivers, races=races))
+    print(DriverEntry.generate())

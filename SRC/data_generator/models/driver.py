@@ -1,30 +1,31 @@
 from datetime import date
 from faker import Faker
-from dateutil.relativedelta import relativedelta
 
-from SRC.data_generator.models.util import Model, sequential_id_gen
+from SRC.data_generator.models.model import Model
+from SRC.data_generator.config import *
 
 fake = Faker()
 fake.unique.clear()
 
-id = sequential_id_gen()
-
 class Driver(Model):
     def __init__(self):
-        self.id = next(id)
+        super().__init__()
         self.name=fake.name()
-        self.dob=fake.date_of_birth(minimum_age=18, maximum_age=92)
-        dod = self.dob.replace(year=self.dob.year + 80)
-        dt = relativedelta(date.today(), self.dob).years
-        self.dod= self.dob.replace(year=self.dob.year + 80) if dod < date.today() else None
+        self.dob=fake.date_of_birth(minimum_age=DRIVER_GEN_MIN_AGE, maximum_age=DRIVER_GEN_MAX_AGE)
+        dod = self.dob.replace(year=self.dob.year + DRIVER_GEN_DEATH_AGE)
+        self.dod= dod if dod < date.today() else None
         self.gender=fake.passport_gender()
         self.country_of_birth=fake.country()
-        self.total_championships=fake.random_int(0, 2)
-        self.total_race_entries=fake.random_int(0, 2)
-        self.total_race_wins=fake.random_int(0, 105)
-        self.total_points=fake.random_int(0, 5000)
+        # todo: come back and gen these instead of assigning them
+        # self.total_championships=fake.random_int(0, DRIVER_GEN_MAXIMUM_CHAMPIONSHIPS)
+        # self.total_race_entries=fake.random_int(0, DRIVER_GEN_MAX_TOTAL_RACE_ENTRIES)
+        # self.total_race_wins=fake.random_int(0, DRIVER_GEN_MAX_RACE_WINS)
+        # self.total_points=fake.random_int(0, DRIVER_GEN_MAX_POINTS)
+        self.total_championships=0
+        self.total_race_entries=0
+        self.total_race_wins=0
+        self.total_points=0
 
 if __name__ == "__main__":
-    l = Driver.generate(n=5)
-    for d in l:
-        print(d)
+    drivers = Driver.generate(5)
+    print(drivers)
