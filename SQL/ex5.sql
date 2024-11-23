@@ -18,7 +18,8 @@ SELECT constructor_id,
 FROM temp
 GROUP BY constructor_id,
          constructor_name
-ORDER BY min_time_in_pit;
+ORDER BY min_time_in_pit
+LIMIT 10;
 
 
 -- Query 2: Select drivers who have won at least one race
