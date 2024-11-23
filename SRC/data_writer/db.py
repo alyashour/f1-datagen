@@ -1,5 +1,6 @@
 import mysql.connector
 from mysql.connector.abstracts import MySQLConnectionAbstract
+from tqdm import tqdm
 
 from data_writer.sql_commands import *
 from data_writer.util import read_sql_file, info
@@ -180,7 +181,7 @@ def update_derived_attributes(connection: MySQLConnectionAbstract):
     command_count = 0
     with connection.cursor() as cursor:
         cursor.execute(f'USE {DB_NAME}')
-        for command in commands.split(';'):
+        for command in tqdm(commands.split(';'), desc='Updating Derived Data', unit=' table'):
             if 'UPDATE' in command:
                 command_count += 1
                 cursor.execute(command)
