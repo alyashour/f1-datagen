@@ -19,5 +19,7 @@ class Constructor(Model):
         self.total_race_wins = 0
         self.total_points = 0
 
+
+
 if __name__ == "__main__":
     print(Constructor.generate(5))

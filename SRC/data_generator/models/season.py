@@ -18,7 +18,7 @@ class Season(Model):
     def __init__(self):
         super().__init__()
         self.id = next(year)
-        # TEMP
+
         self.driver_winner = 1
         self.constructor_winner = 1
 

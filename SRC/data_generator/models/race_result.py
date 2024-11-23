@@ -16,12 +16,6 @@ from util import UtilList
 fake = Faker()
 fake.unique.clear()
 
-def first(list, predicate):
-    for item in list:
-        if predicate(item):
-            return item
-    raise Exception('no items in list pass predicate')
-
 # takes in some YYYY-MM-DD and returns YYYY
 def get_year(date: str) -> int:
     return int(date.split('-')[0])

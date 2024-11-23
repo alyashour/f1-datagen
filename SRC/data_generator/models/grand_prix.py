@@ -3,7 +3,7 @@ from random import random
 
 from faker import Faker
 
-from data_generator.config import RACES_PER_SEASON
+from data_generator.config import RACES_PER_SEASON, QUALIFYING_FORMAT_SPRINT_RATE
 from data_generator.models.model import Model
 from data_generator.models.season import Season
 from data_generator.models.circuit import Circuit
@@ -21,7 +21,7 @@ class QualifyingFormat(Enum):
 
 def rand_format():
     n = random()
-    if n < 0.9:
+    if n > QUALIFYING_FORMAT_SPRINT_RATE:
         return QualifyingFormat.QUALIFYING
     else:
         return QualifyingFormat.SPRINT
