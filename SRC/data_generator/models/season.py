@@ -18,10 +18,12 @@ class Season(Model):
     def __init__(self):
         super().__init__()
         self.id = next(year)
-
-        # TODO
+        # TEMP
         self.driver_winner = 1
         self.constructor_winner = 1
+
+    def get_year(self):
+        return self.id
 
 if __name__ == "__main__":
     print(Season.generate(5))

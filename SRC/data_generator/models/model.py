@@ -14,7 +14,6 @@ class Model:
             Model._id_counters[cls] = sequential_id_gen()
         self.id = next(Model._id_counters[cls])
 
-
     @classmethod
     def generate(cls, n=1):
         return UtilList([cls() for _ in range(n)])
