@@ -1,5 +1,5 @@
 # credentials for DB
-DB_NAME = 'test'        # name of the db
+DB_NAME = 'f1db'        # name of the db
 DB_HOST = 'localhost'
 DB_USER = 'root'
 # password should be placed in the secrets.py file
