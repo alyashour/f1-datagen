@@ -110,7 +110,7 @@ CREATE TABLE PitStop (
     Race_ID INT NOT NULL,
     Driver_ID INT NOT NULL,
     Lap_Number TINYINT,
-    Time_in_Pit TIME,
+    Time_in_Pit TIME(6),
     FOREIGN KEY (Race_ID) REFERENCES MainRace(Race_ID),
     FOREIGN KEY (Driver_ID) REFERENCES Driver(Driver_ID)
 );

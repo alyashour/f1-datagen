@@ -188,6 +188,16 @@ def update_derived_attributes(connection: MySQLConnectionAbstract):
         assert command_count == EXPECTED_UPDATE_COMMAND_COUNT, "Not enough commands executed"
         connection.commit()
 
+
+def execute_ex3(connection):
+    commands = read_sql_file('ex3.sql')
+
+    with connection.cursor() as cursor:
+        cursor.execute(f'USE {DB_NAME}')
+        for command in commands.split(';'):
+            if 'INSERT INTO' in command:
+                cursor.execute(command)
+
 def main(data):
     connection = None
     try:
@@ -199,6 +209,9 @@ def main(data):
 
         print('populating data...')
         populate(connection, data)
+
+        print('adding ex3')
+        execute_ex3(connection)
 
         print('updating derived attributes...')
         update_derived_attributes(connection)

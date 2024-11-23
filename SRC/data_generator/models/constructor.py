@@ -19,16 +19,5 @@ class Constructor(Model):
         self.total_race_wins = 0
         self.total_points = 0
 
-    @classmethod
-    def generate(cls, n=1):
-        l = super().generate(n)
-
-        if n > 0:
-            l[0].name = 'Mercedes'
-        if n > 1:
-            l[1].name = 'Ferrari'
-
-        return l
-
 if __name__ == "__main__":
     print(Constructor.generate(5))

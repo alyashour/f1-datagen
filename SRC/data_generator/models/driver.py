@@ -54,19 +54,6 @@ class Driver(Model):
         # lock the dob if it's been set in a second pass by the gen
         self.dates_locked = False
 
-    @classmethod
-    def generate(cls, n=1):
-        l = super().generate(n)
-
-        if len(l) > 0:
-            l[0].name = 'Lewis Hamilton'
-            l[0].gender = MALE
-        if len(l) > 2:
-            l[1].name = 'Sebastian Vettel'
-            l[1].gender = MALE
-
-        return l
-
     def get_age(self, year=date.today().year):
         return year - self.dob.year
 

@@ -9,7 +9,7 @@ LAPS = 55
 
 def _random_pit_time():
     t = random.gauss(PIT_STOP_MEAN_COUNT, PIT_STOP_STD_DEVIATION)
-    return round(t, 3)
+    return round(t, 6)
 
 class PitStop(Model):
     def __init__(self, race_id, driver_id, lap_number, time_in_pit):
