@@ -1,4 +1,6 @@
 import random
+
+from data_generator.config import PIT_STOP_MEAN_COUNT, PIT_STOP_STD_DEVIATION
 from data_generator.models.race_result import RaceResult
 from data_generator.models.model import Model
 from util import UtilList
@@ -6,8 +8,8 @@ from util import UtilList
 LAPS = 55
 
 def _random_pit_time():
-    noise = random.uniform(-0.5, 1.5)
-    return round(2 + noise, 3)
+    t = random.gauss(PIT_STOP_MEAN_COUNT, PIT_STOP_STD_DEVIATION)
+    return round(t, 3)
 
 class PitStop(Model):
     def __init__(self, race_id, driver_id, lap_number, time_in_pit):
@@ -36,4 +38,6 @@ class PitStop(Model):
         return l
 
 if __name__ == "__main__":
-    print(PitStop.generate())
+    # print(PitStop.generate(1))
+    for i in range(10):
+        print(_random_pit_time())
