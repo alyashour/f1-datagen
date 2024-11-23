@@ -1,7 +1,7 @@
 from faker import Faker
 from tqdm import tqdm
 
-from data_generator.config import DRIVERS_PER_RACE, FASTEST_QUALIFYING_TIME_SECONDS
+from data_generator.config import DRIVERS_PER_RACE, FASTEST_QUALIFYING_TIME_SECONDS, MAX_QUALIFYING_LAP_TIME_VARIANCE_S
 from data_generator.models import DriverEntry, Constructor, GrandPrix, Circuit
 from data_generator.models.season import Season
 from data_generator.models.model import Model
@@ -59,7 +59,7 @@ class QualifyingResult(Model):
 
             # pick a really fast time
             gap = 0
-            lap_time = FASTEST_QUALIFYING_TIME_SECONDS + fake.random_int(min=0, max=15_000)/1000
+            lap_time = FASTEST_QUALIFYING_TIME_SECONDS + fake.random_int(min=0, max=MAX_QUALIFYING_LAP_TIME_VARIANCE_S * 1000)/1000
 
             # randomly pick a driver
             de_index_gen = applicable_driver_entries.unique_random_index_gen()
