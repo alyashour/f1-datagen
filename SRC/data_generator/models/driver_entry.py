@@ -1,5 +1,8 @@
+import random
+
 from faker import Faker
 
+from data_generator import CONSTRUCTORS_PER_SEASON
 from data_generator.config import SEASON_START_MONTH, SEASON_START_DAY, SEASON_END_MONTH, SEASON_END_DAY
 from data_generator.models.constructor import Constructor
 from data_generator.models.driver import Driver
@@ -35,6 +38,9 @@ class DriverEntry(Model):
 
     @classmethod
     def generate(cls, drivers=None, constructors=None, seasons=None):
+        # TEMP
+        a, b = 0, 0
+
         if drivers is None:
             drivers = Driver.generate(30)
         if constructors is None:
@@ -51,35 +57,25 @@ class DriverEntry(Model):
 
         # loop over all years
         for season in seasons:
+            year = season.get_year()
             driver_id = drivers.unique_random_index_gen()
-            for constructor in constructors:
-                primary_driver: Driver= drivers[next(driver_id)]
-                secondary_driver: Driver = drivers[next(driver_id)]
-                reserve_driver: Driver = drivers[next(driver_id)]
 
-                l.append(DriverEntry(
-                    driver_id=primary_driver.id,
-                    constructor_id=constructor.id,
-                    start_date=f'{season.id}-{SEASON_START_MONTH}-{SEASON_START_DAY}',
-                    end_date=f'{season.id}-{SEASON_END_MONTH}-{SEASON_END_DAY}',
-                    driver_role=PRIMARY
-                ))
+            active_constructors = random.sample(constructors, CONSTRUCTORS_PER_SEASON)
+            for constructor in active_constructors:
+                for role in [PRIMARY, SECONDARY, RESERVE]:
+                    driver = drivers[next(driver_id)]
 
-                l.append(DriverEntry(
-                    driver_id=secondary_driver.id,
-                    constructor_id=constructor.id,
-                    start_date=f'{season.id}-{SEASON_START_MONTH}-{SEASON_START_DAY}',
-                    end_date=f'{season.id}-{SEASON_END_MONTH}-{SEASON_END_DAY}',
-                    driver_role=SECONDARY
-                ))
+                    while not driver.ensure_active(year):
+                        driver = drivers[next(driver_id)]
 
-                l.append(DriverEntry(
-                    driver_id=reserve_driver.id,
-                    constructor_id=constructor.id,
-                    start_date=f'{season.id}-{SEASON_START_MONTH}-{SEASON_START_DAY}',
-                    end_date=f'{season.id}-{SEASON_END_MONTH}-{SEASON_END_DAY}',
-                    driver_role=RESERVE
-                ))
+                    l.append(DriverEntry(
+                        driver_id=driver.id,
+                        constructor_id=constructor.id,
+                        start_date=f'{season.id}-{SEASON_START_MONTH}-{SEASON_START_DAY}',
+                        end_date=f'{season.id}-{SEASON_END_MONTH}-{SEASON_END_DAY}',
+                        driver_role=role
+                    ))
+
         return l
 
 if __name__ == "__main__":

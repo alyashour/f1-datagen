@@ -88,16 +88,9 @@ class RaceResult(Model):
 
             # for every driver in a race
             for i in range(DRIVERS_PER_RACE):
-                driver = drivers[next(driver_index)]
+                driver = participating_drivers[next(driver_index)]
 
-                # try to find the drivers entry for that season
-                while True:
-                    try:
-                        temp = [entry for entry in filtered_entries if entry.driver_id == driver.id]
-                        driver_entry = temp[0]
-                        break
-                    except IndexError:
-                        driver = drivers[next(driver_index)]
+                driver_entry = [entry for entry in filtered_entries if entry.driver_id == driver.id][0]
 
                 l.append(RaceResult(
                     race_id=race.id,
