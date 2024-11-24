@@ -19,10 +19,12 @@ FROM Driver
 ORDER BY Driver_ID DESC
 LIMIT 10;
 
--- INSERT ... ON DUPLICATE KEY UPDATE Command
-INSERT INTO Driver (Driver_ID, Name, DOB, Gender, Country_of_Birth)
-VALUES (1, 'Max Verstappen', '1997-09-30', 'Male', 'Netherlands')
-ON DUPLICATE KEY UPDATE Name = 'Max Verstappen', DOB = '1997-09-30', Gender = 'M', Country_of_Birth = 'Netherlands';
+-- INSERT ... bulk insert multiple records at once
+INSERT INTO Driver (Name, DOB, Gender, Country_of_Birth)
+VALUES
+    ('Max Verstappen', '1997-09-30', 'M', 'Netherlands'),
+    ('Fernando Alonso', '1981-07-29', 'M', 'Spain'),
+    ('Hamza Elkababji', '1400-01-01', 'M', 'North Korea');
 
 -- Select the last 10 rows, prioritizing the most recently inserted or updated ones
 SELECT *
